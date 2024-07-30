@@ -33,16 +33,83 @@ themeBtn.addEventListener("click", () => {
 });
 
 
+const libraryOnHTML = document.querySelector(".book-section");
+
+
 
 const myLibrary = [];
 
 function addBookToLibrary(book) {
   myLibrary.push(book);
-  
 }
+
+function removeBookFromLibrary(book) {
+    const index = myLibrary.indexOf(book);
+    if (index !== -1) {
+        myLibrary.splice(index, 1);
+    }
+}
+
+function addBookToDisplay (book) { // ADD A BOOK OBJECT TO THE HTML FILE
+
+    //creating divs and book structure
+    const bookDiv = document.createElement('div');
+    bookDiv.classList.add('book');
+    
+    const infoDiv = document.createElement('div');
+    infoDiv.classList.add('info');
+    const bookButtons = document.createElement('div');
+    bookButtons.classList.add('bookOptions');
+
+    //creating elements of the book fields
+    const titleElement = document.createElement('h2');
+    titleElement.textContent = book.title;
+    
+    const authorElement = document.createElement('h3');
+    authorElement.textContent = `Author: ${book.author}`;
+    
+    
+    const pagesElement = document.createElement('h4');
+    pagesElement.textContent = `Pages: ${book.pages}`;
+    
+    const readElement = document.createElement('button');
+
+    const removeElement = document.createElement('button');
+    removeElement.classList.add('remove');
+    removeElement.textContent = `Remove`;
+
+    readElement.classList.add('read');
+
+    if (book.read == true) {
+        readElement.classList.add('yes');
+        readElement.textContent = `Read`;
+    }
+    else {
+        readElement.classList.add('not');
+        readElement.textContent = `Not Read`;
+    }
+    
+    //setting the child nodes
+    bookDiv.appendChild(infoDiv);
+    bookDiv.appendChild(bookButtons);
+
+    //appending the book elements to information divs
+    infoDiv.appendChild(titleElement);
+    infoDiv.appendChild(authorElement);
+    infoDiv.appendChild(pagesElement);
+
+    bookButtons.appendChild(readElement);
+    bookButtons.appendChild(removeElement);
+
+    libraryOnHTML.appendChild(bookDiv);
+
+}
+
 Book.prototype.toggleRead = function() {
-    this.read = !this.read; 
+    this.read = !this.read;
 };
+
+
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -51,6 +118,7 @@ function Book(title, author, pages, read) {
     this.read = read;
     
     addBookToLibrary(this);
+    removeBookFromLibrary(this);
 }
 
 
