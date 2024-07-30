@@ -131,7 +131,6 @@ h1 {
     min-height: 270px;
     overflow: auto;
     flex: 1 1 auto;
-    border: 2px solid var(--book-border);
     background-color: var(--book-bg);
     border-radius: var(--radius);
 }
@@ -190,4 +189,164 @@ h1 {
 
 .read {
     color: var(--button-text);
+}
+
+.book-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border-radius: var(--radius);
+    z-index: 10;
+    background-color: var(--header-bg);
+    width: 500px;
+    max-width: 80%;
+}
+
+.book-form.active {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.form-header {
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--button-bg);
+}
+
+.form-header .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.form-header .close {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.close {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: var(--header-bg);
+    transition: 200ms ease-in-out;
+}
+
+.close:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+.form-body {
+    padding: 20px 40px;
+}
+
+#overlay {
+    position: fixed;
+    transition: 200ms ease-in-out;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.70);
+    pointer-events: none;
+    z-index: 9;
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form input[type="text"], form input[type="number"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--book-border);
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--header-bg);
+    margin: 0;
+
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 1px solid var(--book-border);
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+
+    display: grid;
+    place-content: center;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transform-origin: bottom left;
+    transition: 120ms transform ease-in-out;
+    background-color: CanvasText;
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+
+
+.read-check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 25px;
+  }
+
+.no-books {
+    color: var(--text-color);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 60ms ease-in-out;
+    border-radius: var(--radius);
+    z-index: 10;
+    width: 500px;
+}
+
+.no-books.active {
+    transform: translate(-50%, -50%) scale(1);
 }

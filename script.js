@@ -4,6 +4,7 @@ const themeBtn = document.querySelector(".theme");
 const body = document.querySelector("*");
 const moon = document.querySelector("#moon");
 const sun = document.querySelector("#sun");
+const overlay = document.querySelector("#overlay");
 
 let theme = localStorage.getItem('theme') || 0;
 
@@ -12,6 +13,7 @@ moon.style.display = "none";
 
 if (theme == 1 || (theme == 0 && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     body.style.filter = "invert(95%) hue-rotate(180deg)";
+    overlay.style.filter = "invert(95%) hue-rotate(180deg)";
     moon.style.display = "";
     sun.style.display = "none";
 }
@@ -19,11 +21,21 @@ if (theme == 1 || (theme == 0 && window.matchMedia && window.matchMedia('(prefer
 themeBtn.addEventListener("click", () => {
     if (theme == 0) {
         body.style.filter = "invert(95%) hue-rotate(180deg)";
+
+
+        overlay.style.filter = "invert(95%) hue-rotate(180deg)";
+
+
         sun.style.display = "none";
         moon.style.display = "";
         theme = 1;
         localStorage.setItem('theme', 1);
     } else {
+
+
+        overlay.style.filter = "";
+
+
         body.style.filter = "";
         theme = 0;
         moon.style.display = "none";
@@ -34,7 +46,7 @@ themeBtn.addEventListener("click", () => {
 
 
 const libraryOnHTML = document.querySelector(".book-section");
-
+const noBooks = document.querySelector(".no-books");
 
 
 const myLibrary = [];
@@ -69,6 +81,13 @@ toggleReadDisplay = function(book,readElement) {
 }
 
 function updateLibraryHtml () {
+    if (myLibrary.length == 0) {
+        noBooks.classList.add('active');
+    }
+    else {
+        noBooks.classList.remove('active');
+    }
+
     libraryOnHTML.textContent = "";
     for (i = 0; i < myLibrary.length; i++) {
         addBookToDisplay(myLibrary[i]);
@@ -141,13 +160,52 @@ function addBookToDisplay (book) { // ADD A BOOK OBJECT TO THE HTML FILE
 
 }
 
+
+
 const addButton = document.querySelector(".add");
+const closeButton = document.querySelector(".close");
+const form = document.querySelector(".book-form");
+
+
 addButton.addEventListener('click', () => {
     openForm();
 })
 
+closeButton.addEventListener('click', () => {
+    closeForm();
+})
+
+overlay.addEventListener('click', () => {
+    closeForm();
+})
+
+document.getElementById('book-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    const title = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+    const pages = document.getElementById('pages').value;
+    const read = document.getElementById('read').checked;
+  
+    const newBook = new Book(title, author, pages, read);
+    addBookToLibrary(newBook);
+    updateLibraryHtml();
+  
+    // Optional: Clear the form after submission
+    document.getElementById('book-form').reset();
+    closeForm();
+});
+
+
+
 function openForm() {
-    
+    form.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeForm() {
+    form.classList.remove('active');
+    overlay.classList.remove('active');
 }
 
 
@@ -167,4 +225,4 @@ const book1 = new Book("1984", "George Orwell", 328, false);
 const book2 = new Book("To Kill a Mockingbird", "Harper Lee", 281, true);
 
 
-console.log(myLibrary);
+updateLibraryHtml();
