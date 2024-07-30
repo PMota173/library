@@ -49,22 +49,41 @@ const libraryOnHTML = document.querySelector(".book-section");
 const noBooks = document.querySelector(".no-books");
 
 
-const myLibrary = [];
+let myLibrary = [];
+
+function saveLibraryToLocalStorage() {
+    localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+}
+
+function loadLibraryFromLocalStorage() {
+    const storedLibrary = localStorage.getItem('myLibrary');
+    if (storedLibrary) {
+        myLibrary = JSON.parse(storedLibrary);
+    } else {
+        myLibrary = [];
+    }
+}
 
 function addBookToLibrary(book) {
-  myLibrary.push(book);
+    myLibrary.push(book);
+    saveLibraryToLocalStorage();
+    updateLibraryHtml();
 }
+
 
 function removeBookFromLibrary(book) {
     const index = myLibrary.indexOf(book);
     if (index !== -1) {
         myLibrary.splice(index, 1);
+        saveLibraryToLocalStorage();
     }
     updateLibraryHtml();
 }
 
 toggleRead = function(book) {
     book.read = !book.read;
+    saveLibraryToLocalStorage();
+    updateLibraryHtml();
 };
 
 toggleReadDisplay = function(book,readElement) {
@@ -80,6 +99,11 @@ toggleReadDisplay = function(book,readElement) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    loadLibraryFromLocalStorage();
+    updateLibraryHtml();
+});
+
 function updateLibraryHtml () {
     if (myLibrary.length == 0) {
         noBooks.classList.add('active');
@@ -87,7 +111,7 @@ function updateLibraryHtml () {
     else {
         noBooks.classList.remove('active');
     }
-
+    
     libraryOnHTML.textContent = "";
     for (i = 0; i < myLibrary.length; i++) {
         addBookToDisplay(myLibrary[i]);
@@ -208,21 +232,12 @@ function closeForm() {
     overlay.classList.remove('active');
 }
 
-
-
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
 }
-
-
-const hobbit = new Book("hobbit", "jrr tolkien", 408, true);
-const sociedade = new Book("sociedade do anel", "jrr tolkien", 808, true);
-const socie2dade = new Book("sociedade do anel", "jrr tolkien", 808, true);
-const book1 = new Book("1984", "George Orwell", 328, false);
-const book2 = new Book("To Kill a Mockingbird", "Harper Lee", 281, true);
 
 
 updateLibraryHtml();
