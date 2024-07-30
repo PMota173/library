@@ -48,6 +48,31 @@ function removeBookFromLibrary(book) {
     if (index !== -1) {
         myLibrary.splice(index, 1);
     }
+    updateLibraryHtml();
+}
+
+toggleRead = function(book) {
+    book.read = !book.read;
+};
+
+toggleReadDisplay = function(book,readElement) {
+    if (book.read == true) {
+        readElement.classList.add('yes');
+        readElement.classList.remove('not');
+        readElement.textContent = `Read`;
+    }
+    else {
+        readElement.classList.add('not');
+        readElement.classList.remove('yes');
+        readElement.textContent = `Not Read`;
+    }
+}
+
+function updateLibraryHtml () {
+    libraryOnHTML.textContent = "";
+    for (i = 0; i < myLibrary.length; i++) {
+        addBookToDisplay(myLibrary[i]);
+    }
 }
 
 function addBookToDisplay (book) { // ADD A BOOK OBJECT TO THE HTML FILE
@@ -58,10 +83,13 @@ function addBookToDisplay (book) { // ADD A BOOK OBJECT TO THE HTML FILE
     
     const infoDiv = document.createElement('div');
     infoDiv.classList.add('info');
+
     const bookButtons = document.createElement('div');
     bookButtons.classList.add('bookOptions');
 
-    //creating elements of the book fields
+
+
+    //creating elements of the book card 
     const titleElement = document.createElement('h2');
     titleElement.textContent = book.title;
     
@@ -71,8 +99,11 @@ function addBookToDisplay (book) { // ADD A BOOK OBJECT TO THE HTML FILE
     
     const pagesElement = document.createElement('h4');
     pagesElement.textContent = `Pages: ${book.pages}`;
-    
+
+
+    //creating buttons of the book card 
     const readElement = document.createElement('button');
+    toggleReadDisplay(book,readElement);
 
     const removeElement = document.createElement('button');
     removeElement.classList.add('remove');
@@ -80,14 +111,19 @@ function addBookToDisplay (book) { // ADD A BOOK OBJECT TO THE HTML FILE
 
     readElement.classList.add('read');
 
-    if (book.read == true) {
-        readElement.classList.add('yes');
-        readElement.textContent = `Read`;
-    }
-    else {
-        readElement.classList.add('not');
-        readElement.textContent = `Not Read`;
-    }
+
+    /* adding event listners to the book card buttons for 
+        removing and changing if the book was read */
+
+
+    removeElement.addEventListener('click', () => {
+        removeBookFromLibrary(book);
+    })
+
+    readElement.addEventListener('click', () => {
+        toggleRead(book);
+        toggleReadDisplay(book,readElement);
+    })
     
     //setting the child nodes
     bookDiv.appendChild(infoDiv);
@@ -105,9 +141,14 @@ function addBookToDisplay (book) { // ADD A BOOK OBJECT TO THE HTML FILE
 
 }
 
-Book.prototype.toggleRead = function() {
-    this.read = !this.read;
-};
+const addButton = document.querySelector(".add");
+addButton.addEventListener('click', () => {
+    openForm();
+})
+
+function openForm() {
+    
+}
 
 
 
@@ -116,16 +157,13 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
-    
-    addBookToLibrary(this);
-    removeBookFromLibrary(this);
 }
 
 
 const hobbit = new Book("hobbit", "jrr tolkien", 408, true);
 const sociedade = new Book("sociedade do anel", "jrr tolkien", 808, true);
 const socie2dade = new Book("sociedade do anel", "jrr tolkien", 808, true);
-const book1 = new Book("1984", "George Orwell", 328, true);
+const book1 = new Book("1984", "George Orwell", 328, false);
 const book2 = new Book("To Kill a Mockingbird", "Harper Lee", 281, true);
 
 

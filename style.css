@@ -172,6 +172,13 @@ h1 {
     font-weight: 200;
 }
 
+.yes {
+    background-color: var(--read-check);
+}
+.not {
+    background-color: var(--read-uncheck);
+}
+
 .remove:hover, .read:hover {
     transform:scale(1.03);
 }
@@ -183,5 +190,4 @@ h1 {
 
 .read {
     color: var(--button-text);
-    background-color: var(--read-uncheck);
 }
